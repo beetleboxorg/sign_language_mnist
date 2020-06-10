@@ -69,6 +69,23 @@ def train_nn(dataset_loc):
           validation_data=(val_data, val_label)
           )
 
+    #Evaluate Model Accracy
+    scores = model.evaluate(testing_data, 
+                        testing_label,
+                        batch_size=BATCHSIZE
+                        )
+    
+    print('Loss: %.3f' % scores[0])
+    print('Accuracy: %.3f' % scores[1])
+
+    # save weights, model architecture & optimizer to an HDF5 format file
+    model.save(os.path.join('./','keras_trained_model.h5'))
+    print ('FINISHED!')
+
+    print ('Convert Keras to TF')
+
+
+
 
 
 def main():

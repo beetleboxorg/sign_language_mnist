@@ -26,3 +26,4 @@ def neural_network():
     print(model.summary())
 
     return(model)
+
