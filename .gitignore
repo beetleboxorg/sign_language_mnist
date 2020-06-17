@@ -7,6 +7,7 @@ quantize/
 train/
 venv/
 deploy/
+launchmodel/
 
 amer_sign2.png
 amer_sign3.png
