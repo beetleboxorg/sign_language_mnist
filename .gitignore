@@ -7,6 +7,7 @@ quantize/
 train/
 venv/
 deploy/
+launchmodel/
 
 amer_sign2.png
 amer_sign3.png
@@ -23,7 +24,7 @@ sign_mnist_train.csv
 
 #Ignore any Visual Studio Code
 sign_language_mnist.code-workspace
-.vscode
+.vscode/
 
 ######################Default Python ignores#####################
 # Byte-compiled / optimized / DLL files
