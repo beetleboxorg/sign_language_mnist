@@ -19,7 +19,7 @@
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
-            "args": ["--no-train"]
+            "args": ["--train"]
         },
         {
             "name": "Python: Current File",

@@ -1,7 +1,44 @@
+'''
+Copyright 2019 Xilinx Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+'''
+
+'''Modified by Beetlebox Limited for usage with the MNIST Sign Language Database
+
+Modifications published under Apache License 2.0'''
+
+'''
+ Copyright 2020 Beetlebox Limited
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+'''
+
 import csv, argparse
 import sys
 import os
 import argparse
+import cv2
 import tensorflow as tf
 import numpy as np
 from keras import datasets, utils, layers, models, optimizers
@@ -17,18 +54,16 @@ def train_nn(dataset_loc, train_bool):
         BATCHSIZE=32
         EPOCHS=3
         LEARN_RATE=0.0001
-        DECAY_RATE=1e-6    
+        DECAY_RATE=1e-6
+        NUM_IMAGES=10
         #Pre-processes data and trains the neural network
-        
-        #Open Training and test se
-        training_debug_log = open("training_debug_log.txt", "w")
-        testing_debug_log = open("training_debug_log.txt", "w")
 
         #Get the column names form the first row of the csv file
         training_dataset_filepath='%ssign_mnist_train/sign_mnist_train.csv' % dataset_loc
         testing_dataset_filepath='%ssign_mnist_test/sign_mnist_test.csv' % dataset_loc
 
-        train_data, train_label, val_data, val_label, testing_data, testing_label=extract_data(training_dataset_filepath, testing_dataset_filepath)
+        train_data, train_label, val_data, val_label, testing_data, testing_label=extract_data(training_dataset_filepath, testing_dataset_filepath, 10)
+
 
         model=neural_network()
 

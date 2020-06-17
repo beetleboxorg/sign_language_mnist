@@ -1,6 +1,12 @@
 ######################Custom User Ignores#####################
 sign_mnist_test/
 sign_mnist_train/
+freeze/
+keras2tf/
+quantize/
+train/
+venv/
+deploy/
 
 amer_sign2.png
 amer_sign3.png
@@ -14,6 +20,10 @@ sign_mnist_train.csv
 *.html
 *.txt
 *.mp4
+
+#Ignore any Visual Studio Code
+sign_language_mnist.code-workspace
+.vscode
 
 ######################Default Python ignores#####################
 # Byte-compiled / optimized / DLL files

@@ -1,3 +1,39 @@
+'''
+Copyright 2019 Xilinx Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+'''
+
+'''Modified by Beetlebox Limited for usage with the MNIST Sign Language Database
+
+Modifications published under Apache License 2.0'''
+
+'''
+ Copyright 2020 Beetlebox Limited
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+'''
+
 import sys
 import os
 import argparse
@@ -25,7 +61,7 @@ def graph_eval(dataset_loc, input_graph_def, graph, input_node, output_node, bat
     # Extact data from csv files again
     training_dataset_filepath='%ssign_mnist_train/sign_mnist_train.csv' % dataset_loc
     testing_dataset_filepath='%ssign_mnist_test/sign_mnist_test.csv' % dataset_loc
-    train_data, train_label, val_data, val_label, testing_data, testing_label=extract_data(training_dataset_filepath, testing_dataset_filepath)
+    train_data, train_label, val_data, val_label, testing_data, testing_label=extract_data(training_dataset_filepath, testing_dataset_filepath,0)
 
     total_batches = int(len(testing_data)/batchsize)
   
