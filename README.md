@@ -4,7 +4,7 @@
 A beginners guide to getting started with AI on FPGAs for embedded systems. This tutorial uses Xilinx Zynq series FPGAs and the Xilinx Vitis AI tool as well as Tensorflow and Keras. The tutorials accompanying this code can be found on the Beetlebox website or on our github.io:
 
 Multi-Part Series:
-1.Introduction
+1.[Introduction](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-1/)
 
 Github.io (Coming Soon):
 
@@ -14,11 +14,11 @@ The tutorials are focused on Sign Language recognition using Vitis AI to transla
 This tutorial uses the [Sign Language MNIST dataset from Kaggle](https://www.kaggle.com/datamunge/sign-language-mnist). It consists of the alphabet represented in American Sign Language (excluding J and Z which require motion to represent). It is designed as a drop-in replacement of the famous MNIST dataset and uses the same 28x28 pixel format with 27,455 cases for training and 7172 cases for testing.  
 
 ## Tested Environment
-OS: Ubuntu 18.04
-Vitis AI version: V1.1
-FPGA used: Zynq Ultrascale+ series ZCU104
-Tensorflow version: 1.15
-Keras version: 2.2.5
+* OS: Ubuntu 18.04
+* Vitis AI version: V1.1
+* FPGA used: Zynq Ultrascale+ series ZCU104
+* Tensorflow version: 1.15
+* Keras version: 2.2.5
 
 ## Installation Guide
 * To run this, we will need to install Docker and Vitis AI, [instructions can be found here](https://github.com/Xilinx/Vitis-AI).
@@ -51,7 +51,7 @@ cd sign_language_mnist
 ./run_sign_language_mnist.sh 
 
 ```
-For an in-depth explanation of what the script does, please see the tutorials
+For an in-depth explanation of what the script does, [please see the tutorials](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-1/)
 
 ### Running on the FPGA
 Once we have our model, we then need to set up our FPGA. To do this we first need to flash an image containing all the hardware we need onto the FPGA. Fortunatly, Xilinx provides a pre-made one and instructions on how to flash an image in the [Vitis User Guide found here](https://www.xilinx.com/html_docs/vitis_ai/1_1/gum1570690244788.html). Ensure you can successfully boot and connect to the FPGA using SSH as outlined in the user guide. This may involve configuring the boards IP through ifconfig
