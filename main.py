@@ -46,7 +46,7 @@ from nn_model import neural_network
 from keras2tf import keras2tf
 from extract_data import extract_data
 
-def train_nn(dataset_loc, train_bool):
+def train_nn(dataset_loc, train_bool, num_test):
 
     if (train_bool):
         #Set Parameters
@@ -62,7 +62,7 @@ def train_nn(dataset_loc, train_bool):
         training_dataset_filepath='%ssign_mnist_train/sign_mnist_train.csv' % dataset_loc
         testing_dataset_filepath='%ssign_mnist_test/sign_mnist_test.csv' % dataset_loc
 
-        train_data, train_label, val_data, val_label, testing_data, testing_label=extract_data(training_dataset_filepath, testing_dataset_filepath, 10)
+        train_data, train_label, val_data, val_label, testing_data, testing_label=extract_data(training_dataset_filepath, testing_dataset_filepath, num_test)
 
 
         model=neural_network()
@@ -110,13 +110,16 @@ def main():
                     default='./',
                     help='The directory where the dataset is held')
 
+
     argpar.add_argument('--train', dest='train', action='store_true')
     argpar.add_argument('--no-train', dest='train', action='store_false')
+    argpar.add_argument('--num_test', dest='num_test', action='store', type=int,)
     argpar.set_defaults(train=True)
+    argpar.set_defaults(num_test=10)
 
     args = argpar.parse_args()  
 
-    train_nn(args.dataset, args.train)
+    train_nn(args.dataset, args.train, args.num_test)
 
     
 

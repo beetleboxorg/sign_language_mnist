@@ -107,7 +107,7 @@ vai_c_tensorflow \
 
 # copy elf to target folder
 cp launchmodel/*.elf deploy/.
-cp target/* deploy/.
+cp -r target/* deploy/.
 echo "  Copied elf file(s) to target folder"
 
 
