@@ -54,7 +54,7 @@ cd sign_language_mnist
 For an in-depth explanation of what the script does, please see the tutorials
 
 ### Running on the FPGA
-Once we have our model, we then need to set up our FPGA. To do this we first need to flash an image containing all the hardware we need onto the FPGA. Fortunatly, Xilinx provides a pre-made oen and instructions on how to flash an image in the [Vitis User Guide found here](https://www.xilinx.com/html_docs/vitis_ai/1_1/gum1570690244788.html). Ensure you can successfully boot and connect to the FPGA using SSH as outlined in the user guide. This may involve configuring the boards IP through ifconfig
+Once we have our model, we then need to set up our FPGA. To do this we first need to flash an image containing all the hardware we need onto the FPGA. Fortunatly, Xilinx provides a pre-made one and instructions on how to flash an image in the [Vitis User Guide found here](https://www.xilinx.com/html_docs/vitis_ai/1_1/gum1570690244788.html). Ensure you can successfully boot and connect to the FPGA using SSH as outlined in the user guide. This may involve configuring the boards IP through ifconfig
 
 ```bash
 ifconfig eth0 192.168.1.10 netmask 255.255.255.0
