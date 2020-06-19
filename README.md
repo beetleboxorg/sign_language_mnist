@@ -1,10 +1,10 @@
 # FPGA Vitis AI Tutorial using Tensorflow and Keras
 
-![Image of Sign Language MNIST](https://github.com/beetleboxorg/sign_language_mnist/sign_language_cover_square.jpg)
+![Image of Sign Language MNIST](https://github.com/beetleboxorg/sign_language_mnist/blob/master/sign_language_cover_square.jpg)
 A beginners guide to getting started with AI on FPGAs for embedded systems. This tutorial uses Xilinx Zynq series FPGAs and the Xilinx Vitis AI tool as well as Tensorflow and Keras. The tutorials accompanying this code can be found on the Beetlebox website or on our github.io:
 
 Multi-Part Series:
-1. Introduction
+1.Introduction
 
 Github.io (Coming Soon):
 
