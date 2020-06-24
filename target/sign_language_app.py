@@ -110,31 +110,43 @@ def runDPU(dpu,img,batchSize,results,threadId,threadImages):
 
 
 
-def runApp(batchSize, threadnum, meta_json, image_dir):
+def runApp(batchSize, threadnum, meta_json, image_dir, custom_dir):
 
     """ create runner """
     dpu = runner.Runner(meta_json)
 
     listImage=os.listdir(image_dir)
-    runTotal = len(listImage)
+
+    customListImage=os.listdir(custom_dir)
+    runTotal = len(listImage)+len(customListImage)
 
 
     """ pre-process all images """
     img = []
-    for i in range(runTotal):
+    for i in range(len(listImage)):
         image = cv2.imread(os.path.join(image_dir,listImage[i]), cv2.IMREAD_GRAYSCALE)
         image = image.reshape(28,28,1)
         image = image/255.0
         img.append(image)
 
+    custom_img = []
+    for i in range(len(customListImage)):
+        image = cv2.imread(os.path.join(custom_dir,customListImage[i]), cv2.IMREAD_GRAYSCALE)
+        image = image.reshape(28,28,1)
+        image = image/255.0
+        custom_img.append(image)
+
+
     """ make a list to hold results - each thread will write into it """
     results = [None] * len(img)
+    custom_results = [None] * len(custom_img)
 
 
     """run with batch """
     threadAll = []
    
     threadImages=int(len(img)/threadnum)+1
+    customThreadImages=int(len(custom_img)/threadnum)+1
 
     # set up the threads
     for i in range(threadnum):
@@ -145,6 +157,16 @@ def runApp(batchSize, threadnum, meta_json, image_dir):
             endIdx=len(listImage)
         t1 = threading.Thread(target=runDPU, args=(dpu,img[startIdx:endIdx],batchSize,results,i,threadImages))
         threadAll.append(t1)
+
+    # set up the custom threads
+    for i in range(threadnum):
+        startIdx = i*customThreadImages
+        if ( (len(customListImage)-(i*customThreadImages)) > customThreadImages):
+            endIdx=(i+1)*customThreadImages
+        else:
+            endIdx=len(customListImage)
+        t2 = threading.Thread(target=runDPU, args=(dpu,custom_img[startIdx:endIdx],batchSize,custom_results,i,customThreadImages))
+        threadAll.append(t2)
 
     time1 = time.time()
     for x in threadAll:
@@ -163,6 +185,12 @@ def runApp(batchSize, threadnum, meta_json, image_dir):
     result_guide=["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y"]
     correct=0
     wrong=0
+
+    print("Custom Image Predictions:")
+    for i in range(len(custom_img)):
+        gt = customListImage[i].split('.')
+        print("Custom Image: ", gt[0], " Predictions:", result_guide[custom_results[i]])
+
 
     with open('resultguide.json', 'r') as json_file:
         ground_truth= json.load(json_file)
@@ -197,6 +225,10 @@ def main():
                     type=str,
                     default='images',
   	                help='Path of images folder. Default is ./images')
+    ap.add_argument('-c', '--custom_dir',
+                    type=str,
+                    default='custom_images',
+  	                help='Path of custom images folder. Default is ./custom_images')
     ap.add_argument('-t', '--threads',
                     type=int,
                     default=1,
@@ -208,7 +240,7 @@ def main():
     args = ap.parse_args()
 
 
-    runApp(args.batchsize, args.threads, args.json, args.image_dir)
+    runApp(args.batchsize, args.threads, args.json, args.image_dir, args.custom_dir)
 
     
 if __name__ == '__main__':

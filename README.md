@@ -35,6 +35,8 @@ sudo systemctl enable docker
 <Vitis-AI-Installation-Directory>/Vitis-AI/docker_run.sh xilinx/vitis-ai-cpu:latest
 
 ```
+To test your own custom images, place an image inside **test**. Resizing is automatically performed. There are two test images already in there.
+
 We then need to install Keras in the docker:
 ```bash
 sudo su
@@ -92,7 +94,10 @@ python3 sign_language_app.py -t 1 -b 1 -j /home/root/deploy/dpuv2_rundir/
 We should see a result like so:
 
 ```bash
-Throughput: 820.24 FPS
+Throughput: 1045.72 FPS
+Custom Image Predictions:
+Custom Image:  test_b  Predictions: U
+Custom Image:  test_c  Predictions: F
 testimage_9.png Correct { Ground Truth:  H Prediction:  H }
 testimage_6.png Correct { Ground Truth:  L Prediction:  L }
 testimage_5.png Correct { Ground Truth:  W Prediction:  W }

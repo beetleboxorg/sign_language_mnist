@@ -50,8 +50,12 @@ mkdir freeze
 mkdir quantize
 mkdir deploy
 mkdir deploy/images
+mkdir deploy/custom_images
 
 #Creatge 
+
+echo "Resizing custom images for usage"
+python3 custom_test_image.py
 
 echo "Train keras model and convert to TF"
 python3 main.py 
