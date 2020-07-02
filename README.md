@@ -5,6 +5,8 @@ A beginners guide to getting started with AI on FPGAs for embedded systems. This
 
 Multi-Part Series:
 1.[Introduction](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-1/)
+2.[Getting Started](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-2/)
+3.[Transforming Kaggle Data and Convolutional Neural Networks (CNNs)](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-3/)
 
 Github.io (Coming Soon):
 
