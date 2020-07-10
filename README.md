@@ -4,11 +4,14 @@
 A beginners guide to getting started with AI on FPGAs for embedded systems. This tutorial uses Xilinx Zynq series FPGAs and the Xilinx Vitis AI tool as well as Tensorflow and Keras. The tutorials accompanying this code can be found on the Beetlebox website or on our github.io:
 
 Multi-Part Series:
+
 1.[Introduction](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-1/)
 
 2.[Getting Started](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-2/)
 
 3.[Transforming Kaggle Data and Convolutional Neural Networks (CNNs)](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-3/)
+
+4.[Training and freezing the neural network](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-part-4)
 
 Github.io (Coming Soon):
 
