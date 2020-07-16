@@ -11,7 +11,9 @@ Multi-Part Series:
 
 3.[Transforming Kaggle Data and Convolutional Neural Networks (CNNs)](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-3/)
 
-4.[Training and freezing the neural network](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-part-4)
+4.[Training the neural network](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-part-4)
+
+5.[Optimising the neural network](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-5/)
 
 Github.io (Coming Soon):
 
