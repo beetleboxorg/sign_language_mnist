@@ -65,13 +65,13 @@ freeze_graph --input_graph=./train/tf_complete_model.pb \
     --input_checkpoint=./train/tfchkpt.ckpt \
     --input_binary=true \
     --output_graph=./freeze/frozen_graph.pb \
-    --output_node_names=activation_4_1/Softmax
+    --output_node_names=activation_6_1/Softmax
 
 echo "Evaluate Frozen Graph"
 python3 evaluate_accuracy.py \
    --graph=./freeze/frozen_graph.pb \
    --input_node=input_1_1 \
-   --output_node=activation_4_1/Softmax \
+   --output_node=activation_6_1/Softmax \
    --batchsize=32
 
 
@@ -83,7 +83,7 @@ vai_q_tensorflow quantize \
         --input_frozen_graph=./freeze/frozen_graph.pb \
         --input_nodes=input_1_1 \
         --input_shapes=?,28,28,1 \
-        --output_nodes=activation_4_1/Softmax  \
+        --output_nodes=activation_6_1/Softmax  \
         --input_fn=image_input_fn.calib_input \
         --output_dir=quantize \
         --calib_iter=100
@@ -93,7 +93,7 @@ echo "Evaluate Quantized Graph"
 python3 evaluate_accuracy.py \
    --graph=./quantize/quantize_eval_model.pb \
    --input_node=input_1_1 \
-   --output_node=activation_4_1/Softmax \
+   --output_node=activation_6_1/Softmax \
    --batchsize=32
 
 echo "Compiling"
