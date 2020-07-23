@@ -43,7 +43,7 @@ from keras.models import load_model
 def keras2tf(keras_hdf5,tfckpt,tf_graph):
         
     # set learning phase for no training
-    #backend.set_learning_phase(0)
+    backend.set_learning_phase(0)
 
     loaded_model = load_model(keras_hdf5)
 
