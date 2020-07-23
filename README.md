@@ -5,15 +5,17 @@ A beginners guide to getting started with AI on FPGAs for embedded systems. This
 
 Multi-Part Series:
 
-1.[Introduction](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-1/)
+1. [Introduction](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-1/)
 
-2.[Getting Started](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-2/)
+2. [Getting Started](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-2/)
 
-3.[Transforming Kaggle Data and Convolutional Neural Networks (CNNs)](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-3/)
+3. [Transforming Kaggle Data and Convolutional Neural Networks (CNNs)](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-3/)
 
-4.[Training the neural network](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-part-4)
+4. [Training the neural network](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-part-4)
 
-5.[Optimising the neural network](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-5/)
+5. [Optimising the neural network](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-5/)
+
+6. [Converting and Freezing our CNN](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-6/)
 
 Github.io (Coming Soon):
 
