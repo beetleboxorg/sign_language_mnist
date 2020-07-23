@@ -52,9 +52,9 @@ def train_nn(dataset_loc, train_bool, num_test):
         #Set Parameters
         DATASET_SIZE=27455
         BATCHSIZE=32
-        EPOCHS=10
-        LEARN_RATE=0.0002
-        DECAY_RATE=3e-6
+        EPOCHS=3
+        LEARN_RATE=0.0001
+        DECAY_RATE=1e-6
         NUM_IMAGES=10
         #Pre-processes data and trains the neural network
 
