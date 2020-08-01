@@ -17,6 +17,8 @@ Multi-Part Series:
 
 6. [Converting and Freezing our CNN](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-6/)
 
+7. [Quanitising our CNN](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-7/)
+
 Github.io (Coming Soon):
 
 The tutorials are focused on Sign Language recognition using Vitis AI to translate models built in Tensorflow and Kaggle, explaining both the theory of why and how we use FPGAs for AI and the practise of implementing it. The dataset was chosen because it is small enough to allow for quick training on CPUs.
