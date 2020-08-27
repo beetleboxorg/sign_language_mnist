@@ -23,6 +23,8 @@ Multi-Part Series:
 
 9. [Running our code on the DPU](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-9/)
 
+10. [Conclusion: Improving Convolutional Neural Networks: The weaknesses of the MNIST based datasets and tips for improving poor datasets](https://beetlebox.org/improving-convolutional-neural-networks-the-weaknesses-of-the-mnist-based-datasets-and-tips-for-improving-poor-datasets/)
+
 Github.io (Coming Soon):
 
 The tutorials are focused on Sign Language recognition using Vitis AI to translate models built in Tensorflow and Kaggle, explaining both the theory of why and how we use FPGAs for AI and the practise of implementing it. The dataset was chosen because it is small enough to allow for quick training on CPUs.
