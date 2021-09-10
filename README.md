@@ -3,27 +3,6 @@
 ![Image of Sign Language MNIST](https://github.com/beetleboxorg/sign_language_mnist/blob/master/sign_language_cover_square.jpg)
 A beginners guide to getting started with AI on FPGAs for embedded systems. This tutorial uses Xilinx Zynq series FPGAs and the Xilinx Vitis AI tool as well as Tensorflow and Keras. The tutorials accompanying this code can be found on the Beetlebox website or on our github.io:
 
-Multi-Part Series:
-
-1. [Introduction](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-1/)
-
-2. [Getting Started](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-2/)
-
-3. [Transforming Kaggle Data and Convolutional Neural Networks (CNNs)](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-3/)
-
-4. [Training the neural network](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-part-4)
-
-5. [Optimising the neural network](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-5/)
-
-6. [Converting and Freezing our CNN](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-6/)
-
-7. [Quanitising our CNN](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-7/)
-
-8. [Compiling our CNN](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-8/)
-
-9. [Running our code on the DPU](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-9/)
-
-10. [Conclusion: Improving Convolutional Neural Networks: The weaknesses of the MNIST based datasets and tips for improving poor datasets](https://beetlebox.org/improving-convolutional-neural-networks-the-weaknesses-of-the-mnist-based-datasets-and-tips-for-improving-poor-datasets/)
 
 Github.io (Coming Soon):
 
@@ -34,9 +13,9 @@ This tutorial uses the [Sign Language MNIST dataset from Kaggle](https://www.kag
 
 ## Tested Environment
 * OS: Ubuntu 18.04
-* Vitis AI version: V1.1
+* Vitis AI version: V1.4
 * FPGA used: Zynq Ultrascale+ series ZCU104
-* Tensorflow version: 1.15
+* Tensorflow version: 2.3
 * Keras version: 2.2.5
 
 ## Installation Guide
@@ -59,8 +38,8 @@ To test your own custom images, place an image inside **test**. Resizing is auto
 We then need to install Keras in the docker:
 ```bash
 sudo su
-conda activate vitis-ai-tensorflow
-pip install keras==2.2.5
+conda activate vitis-ai-tensorflow2
+pip install keras==2.6
 conda install -y pillow
 exit
 conda activate vitis-ai-tensorflow

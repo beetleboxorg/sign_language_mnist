@@ -37,8 +37,9 @@ Modifications published under Apache License 2.0'''
 import tensorflow as tf
 import os
 
-from keras import backend
-from keras.models import load_model
+from tensorflow import keras
+from tensorflow.keras import backend
+from tensorflow.keras.models import load_model
 
 def keras2tf(keras_hdf5,tfckpt,tf_graph):
         
@@ -52,27 +53,14 @@ def keras2tf(keras_hdf5,tfckpt,tf_graph):
     print (' Output names:',loaded_model.outputs)
     print('-------------------------------------')
 
-    # set up tensorflow saver object
-    saver = tf.train.Saver()
-
-    # fetch the tensorflow session using the Keras backend
-    tf_session = backend.get_session()
-
-    # get the tensorflow session graph
-    input_graph_def = tf_session.graph.as_graph_def()
-
     # get the TensorFlow graph path, flilename and file extension
     tfgraph_path = './train'
     tfgraph_filename = 'tf_complete_model.pb'
 
-
-    # write out tensorflow checkpoint & inference graph for use with freeze_graph script
-    saver.save(tf_session, tfckpt)
-    tf.train.write_graph(input_graph_def, tfgraph_path, tfgraph_filename, as_text=False)
+    loaded_model.save('saved_model/tfgraph_filename')
 
     print ('TensorFlow information:')
-    print (' Checkpoint saved as:',tfckpt)
-    print (' Graph saved as     :',os.path.join(tfgraph_path,tfgraph_filename))
+    print (' Graph saved as     :',os.path.join(tfgraph_path,'saved_model/tfgraph_filename/saved_model.pb'))
     print('-------------------------------------')
 
     return

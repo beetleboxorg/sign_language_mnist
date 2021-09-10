@@ -1,0 +1,8 @@
+{
+    "lib": "libvart-dpu-runner.so",
+    "filename": "sign_language_mnist.xmodel",
+    "kernel": [
+        "subgraph_quant_batch_normalization"
+    ],
+    "target": "DPUCZDX8G_ISA0_B4096_MAX_BG2"
+}

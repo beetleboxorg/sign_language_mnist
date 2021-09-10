@@ -58,61 +58,66 @@ echo "Resizing custom images for usage"
 python3 custom_test_image.py
 
 echo "Train keras model and convert to TF"
-python3 main.py 
+python3 train_nn.py 
 
-echo "Freeze Graph"
-freeze_graph --input_graph=./train/tf_complete_model.pb \
-    --input_checkpoint=./train/tfchkpt.ckpt \
-    --input_binary=true \
-    --output_graph=./freeze/frozen_graph.pb \
-    --output_node_names=activation_4_1/Softmax
+# echo "Freeze Graph"
+# freeze_graph --input_graph=./saved_model/tfgraph_filename/saved_model.pb \
+#     --input_checkpoint=./train/tfchkpt.ckpt \
+#      --input_binary=true \
+#      --output_graph=./freeze/frozen_graph.pb \
+#      --output_node_names=activation_4_1/Softmax
 
-echo "Evaluate Frozen Graph"
-python3 evaluate_accuracy.py \
-   --graph=./freeze/frozen_graph.pb \
-   --input_node=input_1_1 \
-   --output_node=activation_4_1/Softmax \
-   --batchsize=32
-
-
-echo "Quantizing frozen graph"
-
-vai_q_tensorflow --version
-
-vai_q_tensorflow quantize \
-        --input_frozen_graph=./freeze/frozen_graph.pb \
-        --input_nodes=input_1_1 \
-        --input_shapes=?,28,28,1 \
-        --output_nodes=activation_4_1/Softmax  \
-        --input_fn=image_input_fn.calib_input \
-        --output_dir=quantize \
-        --calib_iter=100
-
-echo "Evaluate Quantized Graph"
-
-python3 evaluate_accuracy.py \
-   --graph=./quantize/quantize_eval_model.pb \
-   --input_node=input_1_1 \
-   --output_node=activation_4_1/Softmax \
-   --batchsize=32
-
-echo "Compiling"
-
-# target board
-BOARD=ZCU104
-ARCH=/opt/vitis_ai/compiler/arch/dpuv2/${BOARD}/${BOARD}.json
-
-vai_c_tensorflow \
-       --frozen_pb=./quantize/deploy_model.pb \
-       --arch=${ARCH} \
-       --output_dir=launchmodel \
-       --net_name=SignLanguageMNISTnet \
-       --options    "{'mode':'normal'}" 
-
-# copy elf to target folder
-cp launchmodel/*.elf deploy/.
-cp -r target/* deploy/.
-echo "  Copied elf file(s) to target folder"
+# echo "Evaluate Frozen Graph"
+# python3 evaluate_accuracy.py \
+#    --graph=./freeze/frozen_graph.pb \
+#    --input_node=input_1_1 \
+#    --output_node=activation_4_1/Softmax \
+#    --batchsize=32
 
 
-echo "Finished"
+# echo "Quantizing frozen graph"
+
+# vai_q_tensorflow --version
+
+# vai_q_tensorflow quantize \
+#         --input_frozen_graph=./freeze/frozen_graph.pb \
+#         --input_nodes=input_1_1 \
+#         --input_shapes=?,28,28,1 \
+#         --output_nodes=activation_4_1/Softmax  \
+#         --input_fn=image_input_fn.calib_input \
+#         --output_dir=quantize \
+#         --calib_iter=100
+
+# echo "Evaluate Quantized Graph"
+
+# python3 evaluate_accuracy.py \
+#    --graph=./quantize/quantize_eval_model.pb \
+#    --input_node=input_1_1 \
+#    --output_node=activation_4_1/Softmax \
+#    --batchsize=32
+
+# echo "Compiling"
+
+# # target board
+# BOARD=ZCU104
+# ARCH=/opt/vitis_ai/compiler/arch/dpuv2/${BOARD}/${BOARD}.json
+
+vai_c_tensorflow2 \
+    -m ./quantized_model.h5 \
+    -a /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/arch/DPUCZDX8G/ZCU104/arch.json \
+    -o ./ -n sign_language_mnist
+
+# vai_c_tensorflow \
+#        --frozen_pb=./quantize/deploy_model.pb \
+#        --arch=${ARCH} \
+#        --output_dir=launchmodel \
+#        --net_name=SignLanguageMNISTnet \
+#        --options    "{'mode':'normal'}" 
+
+# # copy elf to target folder
+# cp launchmodel/*.elf deploy/.
+# cp -r target/* deploy/.
+# echo "  Copied elf file(s) to target folder"
+
+
+# echo "Finished"
