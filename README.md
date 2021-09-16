@@ -86,7 +86,7 @@ Finally we can run the file:
 ```bash
 cd sign_language_mnist/deploy
 source ./compile_shared.sh
-python3 sign_language_app.py -t 1 -b 1 -j /home/root/deploy/dpuv2_rundir/
+python3 sign_language_app.py -t 1 -b 1 -m ~/deploy
 
 ```
 We should see a result like so:

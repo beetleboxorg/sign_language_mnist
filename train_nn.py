@@ -109,21 +109,26 @@ def train_nn(dataset_loc, train_bool, num_test):
         print('Accuracy: %.3f' % scores[1])
 
         # save weights, model architecture & optimizer to an HDF5 format file
+        tf.keras.backend.set_learning_phase(0)
         model.save(os.path.join('./train','keras_trained_model.h5'))
-        print ('Finished Training')
+        print ('######## Finished Training ########')
 
-    print('Loading Float Model')
+    print('######## Loading Float Model ########')
     float_model = tf.keras.models.load_model('./train/keras_trained_model.h5')
-    print('Quantizing Float Model')
+    print('######## Quantizing Float Model ########')
     quantizer = vitis_quantize.VitisQuantizer(float_model)
     quantized_model = quantizer.quantize_model(calib_dataset=(val_data, val_label))
-    quantized_model.save('quantized_model.h5')
-    print('Evaluating the Quantized Model')
-    model.compile( loss='categorical_crossentropy',
+    quantized_model.save('./train/quantized_model.h5')
+    print('######## Evaluating the Quantized Model ########')
+    with vitis_quantize.quantize_scope():
+        test_quantized_model = tf.keras.models.load_model('./train/quantized_model.h5')
+    test_quantized_model.compile( loss='categorical_crossentropy', 
         metrics= ['accuracy'])
-    model.evaluate(testing_data, 
+    test_quantized_model.evaluate(testing_data, 
                             testing_label,
                             batch_size=BATCHSIZE)
+
+    #vitis_quantize.VitisQuantizer.dump_model(quantized_model, (testing_data, testing_label), './dump')
 
 
 
