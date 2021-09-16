@@ -34,7 +34,7 @@ This tutorial uses the [Sign Language MNIST dataset from Kaggle](https://www.kag
 
 ## Tested Environment
 * OS: Ubuntu 18.04
-* Vitis AI version: V1.1
+* Vitis AI version: V1.4
 * FPGA used: Zynq Ultrascale+ series ZCU104
 * Tensorflow version: 1.15
 * Keras version: 2.2.5
