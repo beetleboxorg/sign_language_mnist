@@ -16,7 +16,7 @@
 
 import numpy as np
 import cv2
-from keras import utils
+import tensorflow as tf
 import copy
 import json
 
@@ -61,8 +61,8 @@ def extract_data(training_dataset_filepath, testing_dataset_filepath, num_test_i
     train_label = train_label[:-4000]
 
     # one-hot encode the labels
-    train_label = utils.to_categorical(train_label)
-    testing_label = utils.to_categorical(testing_label)
-    val_label = utils.to_categorical(val_label)
+    train_label = tf.keras.utils.to_categorical(train_label, num_classes=25)
+    testing_label = tf.keras.utils.to_categorical(testing_label, num_classes=25)
+    val_label = tf.keras.utils.to_categorical(val_label, num_classes=25)
     
     return [train_data, train_label, val_data, val_label, testing_data, testing_label]

@@ -42,12 +42,16 @@ rm -r keras2tf
 rm -r freeze
 rm -r quantize
 rm -r deploy
+rm -r launchmodel
+rm -r chkpt
 
 #Create directory
 mkdir train
 mkdir keras2tf
 mkdir freeze
+mkdir chkpt
 mkdir quantize
+mkdir launchmodel
 mkdir deploy
 mkdir deploy/images
 mkdir deploy/custom_images
@@ -61,11 +65,12 @@ echo "Train keras model and convert to TF"
 python3 main.py 
 
 echo "Freeze Graph"
-freeze_graph --input_graph=./train/tf_complete_model.pb \
-    --input_checkpoint=./train/tfchkpt.ckpt \
-    --input_binary=true \
-    --output_graph=./freeze/frozen_graph.pb \
-    --output_node_names=activation_4_1/Softmax
+freeze_graph \
+    --input_meta_graph  ./train/tfchkpt.ckpt.meta \
+    --input_checkpoint  ./train/tfchkpt.ckpt \
+    --output_graph      ./freeze/frozen_graph.pb \
+    --output_node_names activation_4_1/Softmax \
+    --input_binary      true
 
 echo "Evaluate Frozen Graph"
 python3 evaluate_accuracy.py \
@@ -100,19 +105,18 @@ echo "Compiling"
 
 # target board
 BOARD=ZCU104
-ARCH=/opt/vitis_ai/compiler/arch/dpuv2/${BOARD}/${BOARD}.json
+ARCH=/opt/vitis_ai/compiler/arch/DPUCZDX8G/${BOARD}/arch.json
 
 vai_c_tensorflow \
-       --frozen_pb=./quantize/deploy_model.pb \
+       --frozen_pb=./quantize/quantize_eval_model.pb \
        --arch=${ARCH} \
        --output_dir=launchmodel \
        --net_name=SignLanguageMNISTnet \
-       --options    "{'mode':'normal'}" 
 
 # copy elf to target folder
-cp launchmodel/*.elf deploy/.
+cp launchmodel/* deploy/.
 cp -r target/* deploy/.
-echo "  Copied elf file(s) to target folder"
+echo "  Copied xmodel to deploy folder. Please move deploy folder to the FPGA"
 
 
 echo "Finished"

@@ -40,6 +40,7 @@ import os
 from keras import backend
 from keras.models import load_model
 
+
 def keras2tf(keras_hdf5,tfckpt,tf_graph):
         
     # set learning phase for no training
@@ -53,7 +54,7 @@ def keras2tf(keras_hdf5,tfckpt,tf_graph):
     print('-------------------------------------')
 
     # set up tensorflow saver object
-    saver = tf.train.Saver()
+    saver =  tf.compat.v1.train.Saver()
 
     # fetch the tensorflow session using the Keras backend
     tf_session = backend.get_session()

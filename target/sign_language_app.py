@@ -1,12 +1,9 @@
 '''
 Copyright 2020 Xilinx Inc.
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
-
     http://www.apache.org/licenses/LICENSE-2.0
-
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,159 +11,126 @@ See the License for the specific language governing permissions and
 limitations under the License.
 '''
 
-'''Modifed by Beetlebox Limited for usage with the MNIST Sign Language Database
-
-Modifications published under Apache License 2.0'''
-
-'''
- Copyright 2020 Beetlebox Limited
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-'''
-
 from ctypes import *
+from typing import List
 import cv2
 import numpy as np
-import runner
+import vart
 import os
-import math
+import pathlib
+import xir
 import threading
 import time
+import sys
 import argparse
 import json
 
 
+def preprocess_fn(image_path):
+    '''
+    Image pre-processing.
+    Opens image as grayscale then normalizes to range 0:1
+    input arg: path of image file
+    return: numpy array
+    '''
+    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    image = image.reshape(28,28,1)
+    image = image/255.0
+    return image
 
-'''
-run CNN with batch
-dpu: dpu runner
-img: imagelist to be run
-'''
-def runDPU(dpu,img,batchSize,results,threadId,threadImages):
 
-    """get tensor"""
+def get_child_subgraph_dpu(graph: "Graph") -> List["Subgraph"]:
+    assert graph is not None, "'graph' should not be None."
+    root_subgraph = graph.get_root_subgraph()
+    assert (root_subgraph is not None), "Failed to get root subgraph of input Graph object."
+    if root_subgraph.is_leaf:
+        return []
+    child_subgraphs = root_subgraph.toposort_child_subgraph()
+    assert child_subgraphs is not None and len(child_subgraphs) > 0
+    return [
+        cs
+        for cs in child_subgraphs
+        if cs.has_attr("device") and cs.get_attr("device").upper() == "DPU"
+    ]
+
+
+def runDPU(id,start,dpu,img):
+
+    '''get tensor'''
     inputTensors = dpu.get_input_tensors()
     outputTensors = dpu.get_output_tensors()
-    tensorformat = dpu.get_tensor_format()
-    if tensorformat == dpu.TensorFormat.NCHW:
-        outputHeight = outputTensors[0].dims[2]
-        outputWidth = outputTensors[0].dims[3]
-        outputChannel = outputTensors[0].dims[1]
-    elif tensorformat == dpu.TensorFormat.NHWC:
-        outputHeight = outputTensors[0].dims[1]
-        outputWidth = outputTensors[0].dims[2]
-        outputChannel = outputTensors[0].dims[3]
-    else:
-        exit("Format error")
-    outputSize = outputHeight*outputWidth*outputChannel
-    #softmax = np.empty(outputSize)
+    input_ndim = tuple(inputTensors[0].dims)
+    output_ndim = tuple(outputTensors[0].dims)
 
-    remaining = len(img)
-    batchCount = 0
-
-    while remaining > 0:
-
-        if (remaining> batchSize):
+    batchSize = input_ndim[0]
+    n_of_images = len(img)
+    count = 0
+    write_index = start
+    while count < n_of_images:
+        if (count+batchSize<=n_of_images):
             runSize = batchSize
         else:
-            runSize = remaining
-        remaining = remaining - batchSize
- 
-        shapeIn = (runSize,) + tuple([inputTensors[0].dims[i] for i in range(inputTensors[0].ndims)][1:])
-        
-        """ prepare batch input/output """
+            runSize=n_of_images-count
+
+        '''prepare batch input/output '''
         outputData = []
         inputData = []
-        outputData.append(np.empty((runSize,outputSize), dtype = np.float32, order = 'C'))
-        inputData.append(np.empty((shapeIn), dtype = np.float32, order = 'C'))
-        
-        """ init input image to input buffer """
+        inputData = [np.empty(input_ndim, dtype=np.float32, order="C")]
+        outputData = [np.empty(output_ndim, dtype=np.float32, order="C")]
+
+        '''init input image to input buffer '''
         for j in range(runSize):
             imageRun = inputData[0]
-            imageRun[j,...] = img[(batchCount*batchSize)+j].reshape(inputTensors[0].dims[1],inputTensors[0].dims[2],inputTensors[0].dims[3])
+            imageRun[j, ...] = img[(count + j) % n_of_images].reshape(input_ndim[1:])
 
-        """ run with batch """
+        '''run with batch '''
         job_id = dpu.execute_async(inputData,outputData)
         dpu.wait(job_id)
 
-        """ calculate argmax over batch """
+        '''store output vectors '''
         for j in range(runSize):
-            argmax = np.argmax(outputData[0][j])
-            results[(threadId*threadImages)+(batchCount*batchSize)+j] = argmax
-
-        batchCount += 1
-
-    return
+            out_q[write_index] = np.argmax(outputData[0][j])
+            write_index += 1
+        count = count + runSize
 
 
+def app(image_dir,threads,model,results_guide):
 
-def runApp(batchSize, threadnum, meta_json, image_dir, custom_dir):
+    listimage=os.listdir(image_dir)
+    runTotal = len(listimage)
 
-    """ create runner """
-    dpu = runner.Runner(meta_json)
+    with open(results_guide, 'r') as json_file:
+        ground_truth_dict= json.load(json_file)
 
-    listImage=os.listdir(image_dir)
+    global out_q
+    out_q = [None] * runTotal
 
-    customListImage=os.listdir(custom_dir)
-    runTotal = len(listImage)+len(customListImage)
+    g = xir.Graph.deserialize(model)
+    subgraphs = get_child_subgraph_dpu(g)
+    all_dpu_runners = []
+    for i in range(threads):
+        all_dpu_runners.append(vart.Runner.create_runner(subgraphs[0], "run"))
 
-
-    """ pre-process all images """
+    ''' preprocess images '''
+    print('Pre-processing',runTotal,'images...')
     img = []
-    for i in range(len(listImage)):
-        image = cv2.imread(os.path.join(image_dir,listImage[i]), cv2.IMREAD_GRAYSCALE)
-        image = image.reshape(28,28,1)
-        image = image/255.0
-        img.append(image)
+    for i in range(runTotal):
+        path = os.path.join(image_dir,listimage[i])
+        img.append(preprocess_fn(path))
 
-    custom_img = []
-    for i in range(len(customListImage)):
-        image = cv2.imread(os.path.join(custom_dir,customListImage[i]), cv2.IMREAD_GRAYSCALE)
-        image = image.reshape(28,28,1)
-        image = image/255.0
-        custom_img.append(image)
-
-
-    """ make a list to hold results - each thread will write into it """
-    results = [None] * len(img)
-    custom_results = [None] * len(custom_img)
-
-
-    """run with batch """
+    '''run threads '''
+    print('Starting',threads,'threads...')
     threadAll = []
-   
-    threadImages=int(len(img)/threadnum)+1
-    customThreadImages=int(len(custom_img)/threadnum)+1
-
-    # set up the threads
-    for i in range(threadnum):
-        startIdx = i*threadImages
-        if ( (len(listImage)-(i*threadImages)) > threadImages):
-            endIdx=(i+1)*threadImages
+    start=0
+    for i in range(threads):
+        if (i==threads-1):
+            end = len(img)
         else:
-            endIdx=len(listImage)
-        t1 = threading.Thread(target=runDPU, args=(dpu,img[startIdx:endIdx],batchSize,results,i,threadImages))
+            end = start+(len(img)//threads)
+        in_q = img[start:end]
+        t1 = threading.Thread(target=runDPU, args=(i,start,all_dpu_runners[i], in_q))
         threadAll.append(t1)
-
-    # set up the custom threads
-    for i in range(threadnum):
-        startIdx = i*customThreadImages
-        if ( (len(customListImage)-(i*customThreadImages)) > customThreadImages):
-            endIdx=(i+1)*customThreadImages
-        else:
-            endIdx=len(customListImage)
-        t2 = threading.Thread(target=runDPU, args=(dpu,custom_img[startIdx:endIdx],batchSize,custom_results,i,customThreadImages))
-        threadAll.append(t2)
+        start=end
 
     time1 = time.time()
     for x in threadAll:
@@ -177,71 +141,58 @@ def runApp(batchSize, threadnum, meta_json, image_dir, custom_dir):
     timetotal = time2 - time1
 
     fps = float(runTotal / timetotal)
-    print("Throughput: %.2f FPS" %fps)
-
-    # post-processing - compare results to ground truth labels
-    # ground truth labels are first part of image file name
-    # Note no J or Z on purpose
-    result_guide=["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y"]
-    correct=0
-    wrong=0
-
-    print("Custom Image Predictions:")
-    for i in range(len(custom_img)):
-        gt = customListImage[i].split('.')
-        print("Custom Image: ", gt[0], " Predictions:", result_guide[custom_results[i]])
+    print("Throughput=%.2f fps, total frames = %.0f, time=%.4f seconds" %(fps, runTotal, timetotal))
 
 
-    with open('resultguide.json', 'r') as json_file:
-        ground_truth= json.load(json_file)
-
-    for i in range(len(listImage)):
-        gt = listImage[i].split('.')
-        ground_truth_value=ground_truth.get(gt[0])
-        if (ground_truth_value==result_guide[results[i]]):
-            correct+=1
-            print(listImage[i], 'Correct { Ground Truth: ',ground_truth_value ,'Prediction: ', result_guide[results[i]], '}')
+    ''' post-processing '''
+    classes = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y"] 
+    correct = 0
+    wrong = 0
+    for i in range(len(out_q)):
+        prediction = classes[out_q[i]]
+        ground_truth, _ = listimage[i].split('_',1)
+        gt = listimage[i].split('.')
+        ground_truth_value=ground_truth_dict.get(gt[0])
+        
+        if (ground_truth_value==prediction):
+            correct += 1
+            print(listimage[i], 'Correct { Ground Truth: ',ground_truth_value ,'Prediction: ', prediction, '}')
         else:
-            wrong+=1
-            print(listImage[i], 'Wrong { Ground Truth: ',ground_truth_value ,'Prediction: ', result_guide[results[i]], '}')
-
-    acc = (correct/len(listImage))*100
-    print('Correct:',correct,'Wrong:',wrong,'Accuracy: %.2f' %acc,'%')
-
-    del dpu
+            wrong += 1
+            print(listimage[i], 'Wrong { Ground Truth: ',ground_truth_value ,'Prediction: ', prediction, '}')
+    accuracy = correct/len(out_q)
+    print('Correct:%d, Wrong:%d, Accuracy:%.4f' %(correct,wrong,accuracy))
 
     return
 
 
+
+# only used if script is run as 'main' from command line
 def main():
 
-    # command line arguments
-    ap = argparse.ArgumentParser()
-    ap.add_argument('-j', '--json',
-                    type=str,
-                    required=True,
-  	                help='Path of folder containing meta.json file. No default, must be supplied by user.')
-    ap.add_argument('-i', '--image_dir',
-                    type=str,
-                    default='images',
-  	                help='Path of images folder. Default is ./images')
-    ap.add_argument('-c', '--custom_dir',
-                    type=str,
-                    default='custom_images',
-  	                help='Path of custom images folder. Default is ./custom_images')
-    ap.add_argument('-t', '--threads',
-                    type=int,
-                    default=1,
-  	                help='Number of threads. Default is 1')
-    ap.add_argument('-b', '--batchsize',
-                    type=int,
-                    default=1,
-  	                help='Input batchsize. Default is 1')
-    args = ap.parse_args()
+  # construct the argument parser and parse the arguments
+  ap = argparse.ArgumentParser()  
+  ap.add_argument('-d', '--image_dir', type=str, default='images', help='Path to folder of images. Default is images')  
+  ap.add_argument('-t', '--threads',   type=int, default=1,        help='Number of threads. Default is 1')
+  ap.add_argument('-m', '--model',     type=str, default='model_dir/customcnn.xmodel', help='Path of xmodel. Default is model_dir/customcnn.xmodel')
+  ap.add_argument('-r', '--results',     type=str, default='./resultguide.json', help='Path to the result guide. Default is ./resultguide.json')
+  ap.add_argument('-c', '--custom_dir',     type=str, default='custom_images', help='Path of custom images folder. Default is ./custom_images')
+
+  args = ap.parse_args()  
+  
+  print ('Command line options:')
+  print (' --image_dir : ', args.image_dir)
+  print (' --threads   : ', args.threads)
+  print (' --model     : ', args.model)
+  print (' --results     : ', args.results)
+  print (' --custom_dir     : ', args.custom_dir)
 
 
-    runApp(args.batchsize, args.threads, args.json, args.image_dir, args.custom_dir)
+  # Standard Images
+  app(args.image_dir,args.threads,args.model, args.results)
+  # Custom Images
+  app(args.custom_dir,args.threads,args.model, args.results)
 
-    
 if __name__ == '__main__':
-    main()
+  main()
+

@@ -8,6 +8,10 @@ train/
 venv/
 deploy/
 launchmodel/
+tb_log/
+chkpt/
+saved_model/
+
 
 amer_sign2.png
 amer_sign3.png
@@ -21,6 +25,7 @@ sign_mnist_train.csv
 *.html
 *.txt
 *.mp4
+*.img
 
 #Ignore any Visual Studio Code
 sign_language_mnist.code-workspace
