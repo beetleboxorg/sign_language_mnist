@@ -40,14 +40,11 @@ We then need to install Keras in the docker:
 sudo su
 conda activate vitis-ai-tensorflow2
 pip install keras==2.6
-conda install -y pillow
-exit
-conda activate vitis-ai-tensorflow
 
 ```
 We can then run the script to build it all:
 ```bash
-cd sign_language_mnist
+cd deploy
 ./run_sign_language_mnist.sh 
 
 ```
@@ -61,20 +58,6 @@ ifconfig eth0 192.168.1.10 netmask 255.255.255.0
 
 ```
 
-We then need to install the relevant libraries for DPU. Download the package [vitis-ai_v1.1_dnndk.tar.gz](https://www.xilinx.com/bin/public/openDownload?filename=vitis-ai_v1.1_dnndk.tar.gz) onto the host and then transfer onto the board through SCP. From the host:
-
-```bash
-scp <download-directory>/vitis-ai_v1.1_dnndk.tar.gz root@192.168.1.10:~/
-
-```
-On the board:
-
-```bash
-tar -xzvf vitis-ai_v1.1_dnndk.tar.gz
-cd vitis-ai_v1.1_dnndk
-./install.sh
-
-```
 We then need to copy the files over that we generated in the __deploy__ folder
 
 ```bash
@@ -84,9 +67,8 @@ scp <Cloned-directory>/sign_language_mnist/deploy root@192.168.1.10:~/
 
 Finally we can run the file:
 ```bash
-cd sign_language_mnist/deploy
-source ./compile_shared.sh
-python3 sign_language_app.py -t 1 -b 1 -m ~/deploy
+cd deploy
+python3 sign_language_app.py --model sign_language_mnist.xmodel --image_dir images --threads 1 -s ./test_resultguide.json
 
 ```
 We should see a result like so:

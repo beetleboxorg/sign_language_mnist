@@ -8,6 +8,8 @@ train/
 venv/
 deploy/
 launchmodel/
+chkpt/
+dump/
 
 amer_sign2.png
 amer_sign3.png

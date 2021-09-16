@@ -56,7 +56,6 @@ from tensorflow_model_optimization.quantization.keras import vitis_quantize
 from tensorflow import keras
 from tensorflow.keras import datasets, utils, layers, models, optimizers
 from nn_model import neural_network
-from keras2tf import keras2tf
 from extract_data import extract_data
 
 def train_nn(dataset_loc, train_bool, num_test):
