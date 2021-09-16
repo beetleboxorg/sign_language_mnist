@@ -14,11 +14,16 @@
  limitations under the License.
 '''
 
+'''Extract the data from the datasets and seperate into training, validation and testing'''
+
 import numpy as np
 import cv2
-import tensorflow as tf
 import copy
 import json
+import tensorflow as tf
+
+from tensorflow import keras
+from tensorflow.keras import utils
 
 def extract_data(training_dataset_filepath, testing_dataset_filepath, num_test_images):
     train_data = np.genfromtxt(training_dataset_filepath, delimiter=',')

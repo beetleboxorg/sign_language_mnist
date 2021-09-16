@@ -93,7 +93,6 @@ def runDPU(id,start,dpu,img):
             write_index += 1
         count = count + runSize
 
-
 def app(image_dir,threads,model,results_guide):
 
     listimage=os.listdir(image_dir)
@@ -153,7 +152,6 @@ def app(image_dir,threads,model,results_guide):
         ground_truth, _ = listimage[i].split('_',1)
         gt = listimage[i].split('.')
         ground_truth_value=ground_truth_dict.get(gt[0])
-        
         if (ground_truth_value==prediction):
             correct += 1
             print(listimage[i], 'Correct { Ground Truth: ',ground_truth_value ,'Prediction: ', prediction, '}')
@@ -176,6 +174,7 @@ def main():
   ap.add_argument('-t', '--threads',   type=int, default=1,        help='Number of threads. Default is 1')
   ap.add_argument('-m', '--model',     type=str, default='model_dir/customcnn.xmodel', help='Path of xmodel. Default is model_dir/customcnn.xmodel')
   ap.add_argument('-r', '--results',     type=str, default='./resultguide.json', help='Path to the result guide. Default is ./resultguide.json')
+  ap.add_argument('-s', '--custom_results',     type=str, default='./test_resultguide.json', help='Path to the custom result guide. Default is ./test_resultguide.json')
   ap.add_argument('-c', '--custom_dir',     type=str, default='custom_images', help='Path of custom images folder. Default is ./custom_images')
 
   args = ap.parse_args()  
@@ -186,12 +185,13 @@ def main():
   print (' --model     : ', args.model)
   print (' --results     : ', args.results)
   print (' --custom_dir     : ', args.custom_dir)
+  print (' --custom_results     : ', args.custom_results)
 
 
   # Standard Images
   app(args.image_dir,args.threads,args.model, args.results)
   # Custom Images
-  app(args.custom_dir,args.threads,args.model, args.results)
+  app(args.custom_dir,args.threads,args.model, args.custom_results)
 
 if __name__ == '__main__':
   main()

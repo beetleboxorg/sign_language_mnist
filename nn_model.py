@@ -14,10 +14,15 @@
  limitations under the License.
 '''
 
-from keras import datasets, utils, layers, models, optimizers
-from keras.callbacks import ModelCheckpoint
+import tensorflow as tf
+
+from tensorflow import keras
+from tensorflow.keras import layers, models
+
+'''This file contains the neural network architectures to be used for the tutorial'''
 
 def neural_network():
+    "The unoptimised neural network architecture to be used"
     inputs = layers.Input(shape=(28, 28, 1))
     net = layers.Conv2D(28, kernel_size=(3, 3), padding='same')(inputs)
     net = layers.Activation('relu')(net)

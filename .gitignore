@@ -8,10 +8,8 @@ train/
 venv/
 deploy/
 launchmodel/
-tb_log/
 chkpt/
-saved_model/
-
+dump/
 
 amer_sign2.png
 amer_sign3.png
