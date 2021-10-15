@@ -1,0 +1,31 @@
+runners:
+ AWS-runner:
+  image: vitis-ai-14
+
+jobs:   
+ run-vitis-ai:
+  runner: AWS-runner
+  type:
+   test: software
+  current_working_directory: /workspace/sign_language_mnist-master    
+  input: 
+   artifact: 
+    - archive.zip
+  steps:
+   - run:
+      name: Test
+      command: |
+       echo "start"
+       conda activate vitis-ai-tensorflow2
+       pip install keras==2.6
+       cd /workspace/sign_language_mnist-master
+       ./run_sign_language_mnist.sh
+       echo "Finished"    
+       
+workflows:
+ vitis-ai-test:
+  triggers:
+   - manual  
+  jobs:
+   - run-vitis-ai
+   
