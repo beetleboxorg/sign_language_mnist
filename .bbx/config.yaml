@@ -8,9 +8,6 @@ jobs:
   type:
    test: sw-emulation
   current_working_directory: /workspace/sign_language_mnist-master    
-  input: 
-   artifact: 
-    - archive.zip
   steps:
    - run:
       name: Test
@@ -18,10 +15,16 @@ jobs:
        echo "start"
        ls -l /proc/$$/exe
        conda activate vitis-ai-tensorflow2
-       pip install keras==2.6
+       pip install keras==2.6       
+       sudo apt-get update;
+       sudo apt-get install awscli -y;
+       aws s3 cp s3://vitis-ai-bucket/sign_language_mnist-master.zip /workspace/
+       aws s3 cp s3://vitis-ai-bucket/archive.zip /workspace/
+       unzip /workspace/sign_language_mnist-master.zip -d /workspace/
+       unzip /workspace/archive.zip -d /workspace/sign_language_mnist-master
        cd /workspace/sign_language_mnist-master
        ./run_sign_language_mnist.sh
-       echo "Finished"    
+       echo "Finished"       
        
 workflows:
  vitis-ai-test:
