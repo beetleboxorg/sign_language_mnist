@@ -7,7 +7,7 @@ jobs:
   runner: AWS-runner
   type:
    test: sw-emulation
-  current_working_directory: ~/sign_language_mnist
+  current_working_directory: /workspace/sign_language_mnist
   input: 
    artifact: 
     - archive.zip
