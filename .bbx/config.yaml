@@ -20,6 +20,7 @@ jobs:
        conda activate vitis-ai-tensorflow2
        pip install keras==2.6
        cd /workspace/sign_language_mnist
+       ls
        ./run_sign_language_mnist.sh
        echo "Finished"    
        
