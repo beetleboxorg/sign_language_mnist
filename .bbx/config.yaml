@@ -7,7 +7,7 @@ jobs:
   runner: AWS-runner
   type:
    test: sw-emulation
-  current_working_directory: /workspace/sign_language_mnist-master    
+  current_working_directory: /workspace/sign_language_mnist
   input: 
    artifact: 
     - archive.zip
@@ -19,7 +19,7 @@ jobs:
        ls -l /proc/$$/exe
        conda activate vitis-ai-tensorflow2
        pip install keras==2.6
-       cd /workspace/sign_language_mnist-master
+       cd /workspace/sign_language_mnist
        ./run_sign_language_mnist.sh
        echo "Finished"    
        
