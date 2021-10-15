@@ -16,6 +16,7 @@ jobs:
       name: Test
       command: |
        echo "start"
+       ls -l /proc/$$/exe
        conda activate vitis-ai-tensorflow2
        pip install keras==2.6
        cd /workspace/sign_language_mnist-master
