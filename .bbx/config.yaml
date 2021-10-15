@@ -27,6 +27,5 @@ workflows:
  vitis-ai-test:
   triggers:
    - manual  
-   - push
   jobs:
    - run-vitis-ai
