@@ -6,7 +6,7 @@ jobs:
  run-vitis-ai:
   runner: AWS-runner
   type:
-   test: software
+   test: sw-emulation
   current_working_directory: /workspace/sign_language_mnist-master    
   input: 
    artifact: 
@@ -26,6 +26,7 @@ workflows:
  vitis-ai-test:
   triggers:
    - manual  
+   - push
   jobs:
    - run-vitis-ai
    
