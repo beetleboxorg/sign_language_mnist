@@ -1,57 +1,80 @@
-# FPGA Vitis AI Tutorial using Tensorflow and Keras
+# Getting started with BeeltleboxCI and Vitis AI: Sign Language MNIST
 
 ![Image of Sign Language MNIST](https://github.com/beetleboxorg/sign_language_mnist/blob/master/sign_language_cover_square.jpg)
+
+This is a tutorial designed to show how to get started using BeetleboxCI and Vitis AI, in which we will cover the following: 
+
+- **Designing a Neural Network** - Designing a simple neural network in Tensorflow and Keras.
+- **Training a Neural Network** - We will show how this neural network can be trained through BeetleboxCI.
+- **Converting the model and preparing for FPGAs** - Through BeetleboxCI we will also be converting the model for use on FPGAs as well as creating the files to run on the board.
+
+
+[The accompanying git repository for this tutorial may be found here.](https://github.com/beetleboxorg/sign_language_mnist)
+
+## Overview
+
 A beginners guide to getting started with AI on FPGAs for embedded systems. This tutorial uses Xilinx Zynq series FPGAs and the Xilinx Vitis AI tool as well as Tensorflow and Keras. The tutorials accompanying this code can be found on the Beetlebox website or on our github.io:
-
-
-Github.io (Coming Soon):
 
 The tutorials are focused on Sign Language recognition using Vitis AI to translate models built in Tensorflow and Kaggle, explaining both the theory of why and how we use FPGAs for AI and the practise of implementing it. The dataset was chosen because it is small enough to allow for quick training on CPUs.
 
-## Sign Language Recognition
-This tutorial uses the [Sign Language MNIST dataset from Kaggle](https://www.kaggle.com/datamunge/sign-language-mnist). It consists of the alphabet represented in American Sign Language (excluding J and Z which require motion to represent). It is designed as a drop-in replacement of the famous MNIST dataset and uses the same 28x28 pixel format with 27,455 cases for training and 7172 cases for testing.  
+## Tools we are using
+ - **Vitis AI:** Vitis AI is Xilinx's development environment for AI on FPGAs.
+ - **BeetleboxCI:** BeetleboxCI is the Continuous Integration software specifically designed for FPGA design. Our free version provides enough hours to run through this tutorial and [you can signup free from the website.](https://beetlebox.org)
+ - **Github**: Github is a git repository service that can be connected to BeetleboxCI to create an automated workflow.
+
+## Pre-requisites
+ - A GitHub account.
+ - A BeetleboxCI account that is linked to your Github account. [If you did not link it when creating your account, you can do so following this tutorial.](https://docs.beetleboxci.com/docs/administration/linked-organisation)
+ - [A kaggle account to download the required dataset](https://www.kaggle.com/datamunge/sign-language-mnist).
+
+## Sign Language MNIST Dataset
+This tutorial uses the [Sign Language MNIST dataset from Kaggle](https://www.kaggle.com/datamunge/sign-language-mnist). It consists of the alphabet represented in American Sign Language (excluding J and Z which require motion to represent). It is designed as a drop-in replacement of the famous MNIST dataset and uses the same 28x28 pixel format with 27,455 cases for training and 7172 cases for testing.
+
 
 ## Tested Environment
-* OS: Ubuntu 18.04
-* Vitis AI version: V1.4
-* FPGA used: Zynq Ultrascale+ series ZCU104
-* Tensorflow version: 2.3
-* Keras version: 2.2.5
+ - OS: Ubuntu 18.04
+ - Vitis AI version: V1.4
+ - FPGA used: Zynq Ultrascale+ series ZCU104
+ - Tensorflow version: 2.3
+ - Keras version: 2.2.5
 
-## Installation Guide
-* To run this, we will need to install Docker and Vitis AI, [instructions can be found here](https://github.com/Xilinx/Vitis-AI).
-* Clone the repo into a folder
-* In the repo download and extract the [Sign Language MNIST dataset from Kaggle](https://www.kaggle.com/datamunge/sign-language-mnist)
-
-
-## Quick Usage Guide
-### Creating the Tensorflow model
-To run the Sign Language Recognition. We need to launch the Vitis AI Docker from a terminal in our repo
-```bash
-cd <Cloned-directory>/sign_language_mnist
-sudo systemctl enable docker
-<Vitis-AI-Installation-Directory>/Vitis-AI/docker_run.sh xilinx/vitis-ai-cpu:latest
-
+## Quick Start Guide
+Let's get our AI up and running on BeetleboxCI  within five minutes.
+1. Create a new git repository, which we will call <code>sign-language-mnist</code>.
+2. [Clone the accompanying git repository for this.](https://github.com/beetleboxorg/sign_language_mnist)
+```sh
+git clone https://github.com/beetleboxorg/sign_language_mnist.git
 ```
-To test your own custom images, place an image inside **test**. Resizing is automatically performed. There are two test images already in there.
-
-We then need to install Keras in the docker:
-```bash
-sudo su
-conda activate vitis-ai-tensorflow2
-pip install keras==2.6
-
+3. Mirror push the cloned repository to your new repository.
+```sh
+cd sign_language_mnist
+git push --mirror git@github.com:<yourgitaccount>/sign-language-mnist.git
 ```
-We can then run the script to build it all:
-```bash
-cd deploy
-./run_sign_language_mnist.sh 
-
+4. Remove the cloned repository.
+```sh
+cd ..
+rm -rf sign_language_mnist
 ```
-For an in-depth explanation of what the script does, [please see the tutorials](https://beetlebox.org/vitis-ai-using-tensorflow-and-keras-tutorial-part-1/)
+5. Login to BeetleboxCI. In projects click on the button labelled <code>Add Project</code>.
+6. We should now see <code>sign-language-mnist</code> listed in our repository. Click the button labelled <code>Create Project</code>
+![sign-language-mnist](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-create-new-project.png)
+7. We now need to upload the dataset for training and testing. [Visit the kaggle page and download the dataset.](https://www.kaggle.com/datamunge/sign-language-mnist)
+8. Go to the <code>Artifact Store</code> and click the button labelled <code>Upload your first artifact</code>.
+9. In the file upload page, choose the file downloaded from Kaggle, which should be called <code>archive.zip</code>. Do not unzip it. Give the file the artifact type of <code>Miscellaneous</code>. Wait for the file to finish uploading, where you should be taken back to the Artifact Store:
+![artifact-store](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-artifact-store.png)
+10. In our projects, we should now see the sign language MNIST project. Click the play button to run the project.
+![sign-language-mnist-run-project](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-run-project.png)
+11. After about three minutes, the project should succesfully complete.
+![sign-language-mnist-complete-project](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-complete-project.png)
+12. The files needed to run this project on our FPGA are then stored in the artifact store.
+![sign-language-mnist-complete-artifact-store](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-complete-artifact-store.png)
 
-### Running on the FPGA
-Once we have our model, we then need to set up our FPGA. To do this we first need to flash an image containing all the hardware we need onto the FPGA. Fortunatly, Xilinx provides a pre-made one and instructions on how to flash an image in the [Vitis User Guide found here](https://www.xilinx.com/html_docs/vitis_ai/1_1/gum1570690244788.html). Ensure you can successfully boot and connect to the FPGA using SSH as outlined in the user guide. This may involve configuring the boards IP through ifconfig
+In twelve simple steps, we have setup our code and data, trained our neural network, converted the model and prepared for use on a FPGA, all on a single pipeline.
+
+
+## Running on the FPGA
+Once we have downloaded our model from BeetleboxCI, we then need to set up our FPGA. To do this we first need to flash an image containing all the hardware we need onto the FPGA. Fortunatly, Xilinx provides a pre-made one and instructions on how to flash an image in the [Vitis User Guide found here](https://www.xilinx.com/html_docs/vitis_ai/1_1/gum1570690244788.html).
+We need to ensure we can successfully boot and connect to the FPGA using SSH as outlined in the user guide. This may involve configuring the boards IP through ifconfig:
 
 ```bash
 ifconfig eth0 192.168.1.10 netmask 255.255.255.0
@@ -91,4 +114,3 @@ testimage_8.png Correct { Ground Truth:  D Prediction:  D }
 Correct: 10 Wrong: 0 Accuracy: 100.00
 
 ```
-
