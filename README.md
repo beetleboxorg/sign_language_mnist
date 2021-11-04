@@ -1,4 +1,4 @@
-# Getting started with BeeltleboxCI and Vitis AI: Sign Language MNIST
+# Getting started with BeetleboxCI and Vitis AI: Sign Language MNIST
 
 ![Image of Sign Language MNIST](https://github.com/beetleboxorg/sign_language_mnist/blob/master/sign_language_cover_square.jpg)
 
