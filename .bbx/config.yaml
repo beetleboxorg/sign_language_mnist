@@ -11,6 +11,9 @@ jobs:
   input: 
    artifact: 
     - archive.zip
+  output: 
+   artifact: 
+    - deploy
   steps:
    - run:
       name: Test
