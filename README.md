@@ -8,6 +8,7 @@ This is a tutorial designed to show how to get started using BeetleboxCI and Vit
 - **Training a Neural Network** - We will show how this neural network can be trained through BeetleboxCI.
 - **Converting the model and preparing for FPGAs** - Through BeetleboxCI we will also be converting the model for use on FPGAs as well as creating the files to run on the board.
 
+[The full tutorial series may be found here on BeetleboxCI documentation](https://docs.beetleboxci.com/docs/tutorials/getting-stated-with-beetleboxci-and-vitis-ai-part-1)
 
 [The accompanying git repository for this tutorial may be found here.](https://github.com/beetleboxorg/sign_language_mnist)
 
