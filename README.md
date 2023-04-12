@@ -57,8 +57,8 @@ rm -rf sign_language_mnist
 ```
 5. Login to BeetleboxCI. In pipelines click on the button labelled <code>Create your first pipeline</code>.
 6. In the following screen, fill in the following:
-  - Project Name: sign_language_mnist
-  - Repository URL: https://github.com/<yourgitaccount>/sign-language-mnist
+  - Project Name: `sign_language_mnist`
+  - Repository URL: `https://github.com/<yourgitaccount\>/sign-language-mnist`
   
 
 7. Also fill in either the "Authentication settings" section OR the "SSH Authentication" section. You will need need to use username and token authentication if you chose the https URL or SSH authentication if you chose the SSH URL.   
