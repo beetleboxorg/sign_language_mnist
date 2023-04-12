@@ -8,7 +8,6 @@ This is a tutorial designed to show how to get started using BeetleboxCI and Vit
 - **Training a Neural Network** - We will show how this neural network can be trained through BeetleboxCI.
 - **Converting the model and preparing for FPGAs** - Through BeetleboxCI we will also be converting the model for use on FPGAs as well as creating the files to run on the board.
 
-[The full tutorial series may be found here on BeetleboxCI documentation](https://docs.beetleboxci.com/docs/tutorials/getting-stated-with-beetleboxci-and-vitis-ai-part-1)
 
 [The accompanying git repository for this tutorial may be found here.](https://github.com/beetleboxorg/sign_language_mnist)
 
@@ -58,7 +57,7 @@ rm -rf sign_language_mnist
 5. Login to BeetleboxCI. In pipelines click on the button labelled <code>Create your first pipeline</code>.
 6. In the following screen, fill in the following:
   - Project Name: `sign_language_mnist`
-  - Repository URL: `https://github.com/<yourgitaccount\>/sign-language-mnist`
+  - Repository URL: `https://github.com/<yourgitaccount>/sign-language-mnist`
   
 
 7. Also fill in either the "Authentication settings" section OR the "SSH Authentication" section. You will need need to use username and token authentication if you chose the https URL or SSH authentication if you chose the SSH URL.   
