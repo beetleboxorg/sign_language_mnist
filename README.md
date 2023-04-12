@@ -25,7 +25,6 @@ The tutorials are focused on Sign Language recognition using Vitis AI to transla
 
 ## Pre-requisites
  - A GitHub account.
- - A BeetleboxCI account that is linked to your Github account. [If you did not link it when creating your account, you can do so following this tutorial.](https://docs.beetleboxci.com/docs/administration/linked-organisation)
  - [A kaggle account to download the required dataset](https://www.kaggle.com/datamunge/sign-language-mnist).
 
 ## Sign Language MNIST Dataset
@@ -56,21 +55,33 @@ git push --mirror git@github.com:<yourgitaccount>/sign-language-mnist.git
 cd ..
 rm -rf sign_language_mnist
 ```
-5. Login to BeetleboxCI. In projects click on the button labelled <code>Add Project</code>.
-6. We should now see <code>sign-language-mnist</code> listed in our repository. Click the button labelled <code>Create Project</code>
-![sign-language-mnist](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-create-new-project.png)
-7. We now need to upload the dataset for training and testing. [Visit the kaggle page and download the dataset.](https://www.kaggle.com/datamunge/sign-language-mnist)
-8. Go to the <code>Artifact Store</code> and click the button labelled <code>Upload your first artifact</code>.
-9. In the file upload page, choose the file downloaded from Kaggle, which should be called <code>archive.zip</code>. Do not unzip it. Give the file the artifact type of <code>Miscellaneous</code>. Wait for the file to finish uploading, where you should be taken back to the Artifact Store:
+5. Login to BeetleboxCI. In pipelines click on the button labelled <code>Create your first pipeline</code>.
+6. In the following screen, fill in the following:
+  - Project Name: sign_language_mnist
+  - Repository URL: https://github.com/<yourgitaccount>/sign-language-mnist
+  
+
+7. Also fill in either the "Authentication settings" section OR the "SSH Authentication" section. You will need need to use username and token authentication if you chose the https URL or SSH authentication if you chose the SSH URL.   
+  - Authentication Settings — Username: `<Github username>`
+  - Authentication Settings — Password: `<Github personal access token>`
+  
+  
+  - SSH Authentication — SSH private key  
+  
+8. Click proceed. You will now be redirected to the pipelines page where you can see the project that you just created. 
+
+9. We now need to upload the dataset for training and testing. [Visit the kaggle page and download the dataset.](https://www.kaggle.com/datamunge/sign-language-mnist)
+10. Go to the <code>Artifact Store</code> and click the button labelled <code>Upload your first artifact</code>.
+11. In the file upload page, choose the file downloaded from Kaggle, which should be called <code>archive.zip</code>. Do not unzip it. Give the file the artifact type of <code>Miscellaneous</code>. Wait for the file to finish uploading, where you should be taken back to the Artifact Store:
 ![artifact-store](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-artifact-store.png)
-10. In our projects, we should now see the sign language MNIST project. Click the play button to run the project.
+12. In our projects, we should now see the sign language MNIST project. Click the play button to run the project.
 ![sign-language-mnist-run-project](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-run-project.png)
-11. After about three minutes, the project should succesfully complete.
+13. After a few minutes, the project should succesfully complete.
 ![sign-language-mnist-complete-project](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-complete-project.png)
-12. The files needed to run this project on our FPGA are then stored in the artifact store.
+14. The files needed to run this project on our FPGA are then stored in the artifact store.
 ![sign-language-mnist-complete-artifact-store](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-complete-artifact-store.png)
 
-In twelve simple steps, we have setup our code and data, trained our neural network, converted the model and prepared for use on a FPGA, all on a single pipeline.
+We have setup our code and data, trained our neural network, converted the model and prepared for use on a FPGA, all on a single pipeline.
 
 
 ## Running on the FPGA
