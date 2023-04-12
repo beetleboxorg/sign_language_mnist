@@ -54,7 +54,8 @@ git push --mirror git@github.com:<yourgitaccount>/sign-language-mnist.git
 cd ..
 rm -rf sign_language_mnist
 ```
-5. Login to BeetleboxCI. In pipelines click on the button labelled <code>Create your first pipeline</code>.
+5. Login to BeetleboxCI. Go to `Pipelines` on the left hand column and then click on the button labelled <code>Create your first pipeline</code>.
+
 6. In the following screen, fill in the following:
   - Project Name: `sign_language_mnist`
   - Repository URL: `https://github.com/<yourgitaccount>/sign-language-mnist`
@@ -70,10 +71,10 @@ rm -rf sign_language_mnist
 8. Click proceed. You will now be redirected to the pipelines page where you can see the project that you just created. 
 
 9. We now need to upload the dataset for training and testing. [Visit the kaggle page and download the dataset.](https://www.kaggle.com/datamunge/sign-language-mnist)
-10. Go to the <code>Artifact Store</code> and click the button labelled <code>Upload your first artifact</code>.
+10. Go to the <code>Artifact Store</code> on the left hand column and click the button labelled <code>Upload your first artifact</code>.
 11. In the file upload page, choose the file downloaded from Kaggle, which should be called <code>archive.zip</code>. Do not unzip it. Give the file the artifact type of <code>Miscellaneous</code>. Wait for the file to finish uploading, where you should be taken back to the Artifact Store:
 ![artifact-store](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-artifact-store.png)
-12. In our projects, we should now see the sign language MNIST project. Click the play button to run the project.
+12. Go back to our <code>Pipelines</code> page, we should now see the sign language MNIST project. Click the name of the project, and then click the play button to run the project.
 ![sign-language-mnist-run-project](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-run-project.png)
 13. After a few minutes, the project should succesfully complete.
 ![sign-language-mnist-complete-project](/img/tutorial/getting-started-with-beetleboxci-and-vitis-ai/sign-language-mnist-complete-project.png)
