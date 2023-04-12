@@ -1,10 +1,10 @@
 runners:
- AWS-runner:
-  image: vitis-ai-14
+ ai-runner:
+  image: ip-192-168-98-98:5000/vitis-ai-14
 
 jobs:   
  run-vitis-ai:
-  runner: AWS-runner
+  runner: ai-runner
   type:
    test: sw-emulation
   current_working_directory: /workspace/sign_language_mnist
