@@ -54,7 +54,7 @@ git push --mirror git@github.com:<yourgitaccount>/sign-language-mnist.git
 cd ..
 rm -rf sign_language_mnist
 ```
-5. Login to BeetleboxCI. Go to `Pipelines` on the left hand column and then click on the button labelled <code>Create your first pipeline</code>.
+5. Login to BeetleboxCI. Go to `Pipelines` on the left hand column and then click on the button labelled <code>Create pipeline</code> or <code>Create your first pipeline</code> if no pipelines are currently listed.
 
 6. In the following screen, fill in the following:
   - Project Name: `sign_language_mnist`
